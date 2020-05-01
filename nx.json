@@ -1,0 +1,30 @@
+{
+  "npmScope": "ttt",
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "tic-tac-toe": {
+      "tags": []
+    },
+    "tic-tac-toe-e2e": {
+      "tags": [],
+      "implicitDependencies": ["tic-tac-toe"]
+    }
+  }
+}
