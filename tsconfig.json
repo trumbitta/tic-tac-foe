@@ -15,7 +15,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@ttt/game-board/feature": ["libs/game-board/feature/src/index.ts"],
+      "@ttt/game-board/data": ["libs/game-board/data/src/index.ts"],
+      "@ttt/shared/models": ["libs/shared/models/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

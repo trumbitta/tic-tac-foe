@@ -109,6 +109,90 @@
           }
         }
       }
+    },
+    "game-board-feature": {
+      "root": "libs/game-board/feature",
+      "sourceRoot": "libs/game-board/feature/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/game-board/feature/.eslintrc",
+            "tsConfig": [
+              "libs/game-board/feature/tsconfig.lib.json",
+              "libs/game-board/feature/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/game-board/feature/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/game-board/feature/jest.config.js",
+            "tsConfig": "libs/game-board/feature/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "game-board-data": {
+      "root": "libs/game-board/data",
+      "sourceRoot": "libs/game-board/data/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/game-board/data/.eslintrc",
+            "tsConfig": [
+              "libs/game-board/data/tsconfig.lib.json",
+              "libs/game-board/data/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/game-board/data/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/game-board/data/jest.config.js",
+            "tsConfig": "libs/game-board/data/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-models": {
+      "root": "libs/shared/models",
+      "sourceRoot": "libs/shared/models/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/shared/models/.eslintrc",
+            "tsConfig": [
+              "libs/shared/models/tsconfig.lib.json",
+              "libs/shared/models/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shared/models/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared/models/jest.config.js",
+            "tsConfig": "libs/shared/models/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

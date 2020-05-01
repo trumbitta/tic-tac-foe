@@ -25,6 +25,15 @@
     "tic-tac-toe-e2e": {
       "tags": [],
       "implicitDependencies": ["tic-tac-toe"]
+    },
+    "game-board-feature": {
+      "tags": []
+    },
+    "game-board-data": {
+      "tags": []
+    },
+    "shared-models": {
+      "tags": []
     }
   }
 }
