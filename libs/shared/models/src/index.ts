@@ -1,2 +1,2 @@
-export * from './lib/game-board-row.model';
-export * from './lib/game-board-cell-coordinates.model';
+export * from './lib/game-board-row-status.model';
+export * from './lib/player.model';

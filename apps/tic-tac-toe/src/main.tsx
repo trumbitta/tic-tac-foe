@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './app/store';
 
 const render = () => {
-  const App = require('./app/app.component').default;
+  const App = require('./app/app.component').App;
 
   ReactDOM.render(
     <Provider store={store}>

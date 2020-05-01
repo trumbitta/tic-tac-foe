@@ -9,7 +9,7 @@ interface GameBoardCellProps {
 
 export const GameBoardCell = styled.div<GameBoardCellProps>`
   background-color: ${({ status }) =>
-    status === 0 ? 'transparent' : status === 1 ? 'rebeccapurple' : 'tomato'};
+    status === -1 ? 'transparent' : status === 1 ? 'rebeccapurple' : 'tomato'};
   width: 100%;
   height: 100%;
   border: 1px solid rebeccapurple;

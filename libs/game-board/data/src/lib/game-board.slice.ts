@@ -1,69 +1,75 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import {
-  GameBoardRowStatus,
-  GameBoardCellCoordinates
+  GameBoardStatus,
+  Player,
+  GameBoardCellStatus
 } from '@ttt/shared/models';
 
 type GameBoardState = {
-  board: GameBoardRowStatus[];
+  board: GameBoardStatus;
+  currentPlayer: Player;
+  moves: {
+    0: number[];
+    1: number[];
+  };
+  winner: GameBoardCellStatus;
 };
 
 const initialState: GameBoardState = {
-  board: [
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0]
-  ]
+  board: [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  currentPlayer: 0,
+  moves: {
+    0: [],
+    1: []
+  },
+  winner: -1
 };
 
 const gameBoardSlice = createSlice({
   name: 'gameBoard',
   initialState,
   reducers: {
-    registerMove(state, action: PayloadAction<GameBoardCellCoordinates>) {
-      const { rowIndex, columnIndex } = action.payload;
+    registerMove(state, action: PayloadAction<number>) {
+      const cellIndex = action.payload;
+      const { currentPlayer, board, moves } = state;
 
-      state.board[rowIndex][columnIndex] = 1;
+      state.board[cellIndex] = currentPlayer;
+      state.moves[currentPlayer].push(cellIndex);
 
-      // TODO: check if redux toolkit is now immutable or use the commented version
-      // state = {
-      //   ...state,
-      //   board: state.board.map((row, currentRowIndex) =>
-      //     row.map((column, currentColumnIndex) => {
-      //       if (
-      //         currentRowIndex === rowIndex &&
-      //         currentColumnIndex === columnIndex
-      //       ) {
-      //         row[columnIndex] = 1;
-      //       }
+      state.winner = isWinner(board, moves[currentPlayer]) ? currentPlayer : -1;
 
-      //       return column;
-      //     })
-      //   )
-      // };
+      state.currentPlayer = switchPlayer(currentPlayer);
     }
-    // displayRepo(state, action: PayloadAction<CurrentRepo>) {
-    //   const { org, repo } = action.payload;
-    //   state.org = org;
-    //   state.repo = repo;
-    // },
-    // setCurrentPage(state, action: PayloadAction<number>) {
-    //   state.page = action.payload;
-    // },
-    // setCurrentDisplayType(state, action: PayloadAction<CurrentDisplayPayload>) {
-    //   const { displayType, issueId = null } = action.payload;
-    //   state.displayType = displayType;
-    //   state.issueId = issueId;
-    // }
   }
 });
 
-export const {
-  registerMove
-  // displayRepo,
-  // setCurrentDisplayType,
-  // setCurrentPage
-} = gameBoardSlice.actions;
+export const { registerMove } = gameBoardSlice.actions;
 
 export const gameBoardReducer = gameBoardSlice.reducer;
+
+function switchPlayer(player: Player): Player {
+  return (1 - player) as Player;
+}
+
+function isWinner(board: GameBoardStatus, moves: number[]): boolean {
+  if (moves.length !== 3) return false;
+
+  const winningBoards: number[][] = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  return (
+    winningBoards.findIndex(
+      board =>
+        board[0] === moves[0] && board[1] === moves[1] && board[2] === moves[2]
+    ) !== -1
+  );
+}
