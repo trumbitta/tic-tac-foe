@@ -32,12 +32,12 @@ const gameBoardSlice = createSlice({
   reducers: {
     registerMove(state, action: PayloadAction<number>) {
       const cellIndex = action.payload;
-      const { currentPlayer, board, moves } = state;
+      const { currentPlayer, moves } = state;
 
       state.board[cellIndex] = currentPlayer;
       state.moves[currentPlayer].push(cellIndex);
 
-      state.winner = isWinner(board, moves[currentPlayer]) ? currentPlayer : -1;
+      state.winner = isWinner(moves[currentPlayer]) ? currentPlayer : -1;
 
       state.currentPlayer = switchPlayer(currentPlayer);
     }
@@ -52,10 +52,10 @@ function switchPlayer(player: Player): Player {
   return (1 - player) as Player;
 }
 
-function isWinner(board: GameBoardStatus, moves: number[]): boolean {
-  if (moves.length !== 3) return false;
+function isWinner(playerMoves: number[]): boolean {
+  if (playerMoves.length < 3) return false;
 
-  const winningBoards: number[][] = [
+  const winningMoveSets: number[][] = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -67,9 +67,9 @@ function isWinner(board: GameBoardStatus, moves: number[]): boolean {
   ];
 
   return (
-    winningBoards.findIndex(
-      board =>
-        board[0] === moves[0] && board[1] === moves[1] && board[2] === moves[2]
+    winningMoveSets.findIndex(
+      winningMoveSet =>
+        playerMoves.filter(move => winningMoveSet.includes(move)).length === 3
     ) !== -1
   );
 }
