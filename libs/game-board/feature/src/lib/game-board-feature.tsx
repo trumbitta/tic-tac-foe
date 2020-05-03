@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from '@reduxjs/toolkit';
+import styled from 'styled-components';
 
 import { registerMove } from '@ttt/game-board/data';
 
@@ -9,32 +11,52 @@ import { RootState } from '../../../../../apps/tic-tac-toe/src/app/root.reducer'
 
 import { GameBoard } from './game-board.component';
 import { GameBoardWinner } from './game-board-winner.component';
-import styled from 'styled-components';
+import { GameBoardStatus } from './game-board-status.component';
+import { GameBoardCurrentPlayer } from './game-board-current-player.component';
+import { GameBoardDraw } from './game-board-draw.component';
 
-const BaseGameBoardFeature: React.FC = () => {
+export const GameBoardFeature: React.FC = () => {
   const dispatch = useDispatch();
-  const { board, winner } = useSelector((state: RootState) => state.gameBoard);
+  const { board, winner, currentPlayer } = useSelector(
+    (state: RootState) => state.gameBoard
+  );
+
+  const isDraw = useSelector((state: RootState) => {
+    const { moves } = state.gameBoard;
+
+    return moves[0].length + moves[1].length === 9;
+  });
 
   function handleRegisterMove(cellIndex: number) {
     dispatch(registerMove(cellIndex));
   }
 
   return (
-    <div>
+    <StyledGameBoardFeature>
+      <GameBoardStatus>
+        <GameBoardCurrentPlayer
+          currentPlayer={currentPlayer}
+        ></GameBoardCurrentPlayer>
+        {winner !== -1 && !isDraw ? (
+          <GameBoardWinner winner={winner}></GameBoardWinner>
+        ) : isDraw ? (
+          <GameBoardDraw></GameBoardDraw>
+        ) : (
+          <>&nbsp;</>
+        )}
+        {}
+      </GameBoardStatus>
       <GameBoard
         board={board}
-        registerMove={foo => handleRegisterMove(foo)}
+        registerMove={cellIndex => handleRegisterMove(cellIndex)}
       ></GameBoard>
-      {winner !== -1 ? (
-        <GameBoardWinner winner={winner}></GameBoardWinner>
-      ) : null}
-    </div>
+    </StyledGameBoardFeature>
   );
 };
 
-export const GameBoardFeature = styled(BaseGameBoardFeature)`
+const StyledGameBoardFeature = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 4fr 1fr;
-  gap: 0.5rem 0;
+  grid-template-rows: 1rem 2rem 4fr;
+  gap: 1rem 0;
 `;

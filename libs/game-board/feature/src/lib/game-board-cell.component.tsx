@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { GameBoardCellStatus } from '@ttt/shared/models';
 
 interface GameBoardCellProps {
@@ -8,14 +8,30 @@ interface GameBoardCellProps {
 }
 
 export const GameBoardCell = styled.div<GameBoardCellProps>`
-  background-color: ${({ status }) =>
-    status === -1 ? 'transparent' : status === 1 ? 'rebeccapurple' : 'tomato'};
+  border-radius: 0.25rem;
   width: 100%;
   height: 100%;
-  border: 1px solid rebeccapurple;
+  border-width: 0.125rem;
+  border-style: solid;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 4rem;
   cursor: pointer;
+
+  ${({ status }) =>
+    status === -1
+      ? css`
+          background-color: transparent;
+          border-color: #cdcdcd;
+        `
+      : status === 1
+      ? css`
+          background-color: rebeccapurple;
+          border-color: rebeccapurple;
+        `
+      : css`
+          background-color: tomato;
+          border-color: tomato;
+        `};
 `;
