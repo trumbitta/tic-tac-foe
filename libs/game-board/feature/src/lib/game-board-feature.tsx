@@ -1,10 +1,15 @@
 import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from '@reduxjs/toolkit';
 import styled from 'styled-components';
 
-import { registerMove, selectIsWinnerByPlayer } from '@ttt/game-board/data';
+import {
+  registerMove,
+  gameOver,
+  selectGameBoardTheWinnerIs,
+  selectGameBoardIsGameOver,
+  selectGameBoardIsDraw
+} from '@ttt/game-board/data';
 
 // Woah ugly
 import { RootState } from '../../../../../apps/tic-tac-toe/src/app/root.reducer';
@@ -21,26 +26,29 @@ export const GameBoardFeature: React.FC = () => {
     (state: RootState) => state.gameBoard
   );
 
-  const isDraw = useSelector((state: RootState) => {
-    const { moves } = state.gameBoard;
+  const winner = useSelector(selectGameBoardTheWinnerIs);
 
-    return moves[0].length + moves[1].length === 9;
-  });
+  const isDraw = useSelector(selectGameBoardIsDraw);
 
-  const isWinner = useSelector(selectIsWinnerByPlayer(currentPlayer));
+  const isGameOver = useSelector(selectGameBoardIsGameOver);
+
+  if (winner !== undefined || isDraw) {
+    dispatch(gameOver());
+  }
 
   function handleRegisterMove(cellIndex: number) {
-    dispatch(registerMove(cellIndex));
+    !isGameOver && dispatch(registerMove(cellIndex));
   }
 
   return (
     <StyledGameBoardFeature>
       <GameBoardStatus>
-        <GameBoardCurrentPlayer
-          currentPlayer={currentPlayer}
-        ></GameBoardCurrentPlayer>
-        {isWinner && !isDraw ? (
-          <GameBoardWinner winner={currentPlayer}></GameBoardWinner>
+        {winner === undefined && !isDraw ? (
+          <GameBoardCurrentPlayer
+            currentPlayer={currentPlayer}
+          ></GameBoardCurrentPlayer>
+        ) : winner !== undefined && !isDraw ? (
+          <GameBoardWinner winner={winner}></GameBoardWinner>
         ) : isDraw ? (
           <GameBoardDraw></GameBoardDraw>
         ) : (
@@ -59,6 +67,6 @@ export const GameBoardFeature: React.FC = () => {
 const StyledGameBoardFeature = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1rem 2rem 4fr;
+  grid-template-rows: 2rem 4fr;
   gap: 1rem 0;
 `;

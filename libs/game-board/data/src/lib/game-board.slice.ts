@@ -11,6 +11,7 @@ export type GameBoardState = {
   board: GameBoardStatus;
   currentPlayer: Player;
   moves: PlayerMoves;
+  gameOver: boolean;
 };
 
 const initialState: GameBoardState = {
@@ -19,7 +20,8 @@ const initialState: GameBoardState = {
   moves: {
     0: [],
     1: []
-  }
+  },
+  gameOver: false
 };
 
 const gameBoardSlice = createSlice({
@@ -34,11 +36,14 @@ const gameBoardSlice = createSlice({
       state.moves[currentPlayer].push(cellIndex);
 
       state.currentPlayer = switchPlayer(currentPlayer);
+    },
+    gameOver(state) {
+      state.gameOver = true;
     }
   }
 });
 
-export const { registerMove } = gameBoardSlice.actions;
+export const { registerMove, gameOver } = gameBoardSlice.actions;
 
 export const gameBoardReducer = gameBoardSlice.reducer;
 
