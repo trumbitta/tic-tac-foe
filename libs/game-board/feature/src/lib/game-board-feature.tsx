@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from '@reduxjs/toolkit';
 import styled from 'styled-components';
 
-import { registerMove } from '@ttt/game-board/data';
+import { registerMove, selectIsWinnerByPlayer } from '@ttt/game-board/data';
 
 // Woah ugly
 import { RootState } from '../../../../../apps/tic-tac-toe/src/app/root.reducer';
@@ -17,7 +17,7 @@ import { GameBoardDraw } from './game-board-draw.component';
 
 export const GameBoardFeature: React.FC = () => {
   const dispatch = useDispatch();
-  const { board, winner, currentPlayer } = useSelector(
+  const { board, currentPlayer } = useSelector(
     (state: RootState) => state.gameBoard
   );
 
@@ -26,6 +26,8 @@ export const GameBoardFeature: React.FC = () => {
 
     return moves[0].length + moves[1].length === 9;
   });
+
+  const isWinner = useSelector(selectIsWinnerByPlayer(currentPlayer));
 
   function handleRegisterMove(cellIndex: number) {
     dispatch(registerMove(cellIndex));
@@ -37,8 +39,8 @@ export const GameBoardFeature: React.FC = () => {
         <GameBoardCurrentPlayer
           currentPlayer={currentPlayer}
         ></GameBoardCurrentPlayer>
-        {winner !== -1 && !isDraw ? (
-          <GameBoardWinner winner={winner}></GameBoardWinner>
+        {isWinner && !isDraw ? (
+          <GameBoardWinner winner={currentPlayer}></GameBoardWinner>
         ) : isDraw ? (
           <GameBoardDraw></GameBoardDraw>
         ) : (
