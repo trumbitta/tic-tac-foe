@@ -37,6 +37,16 @@
     },
     "shared-ui": {
       "tags": []
+    },
+    "chat-server": {
+      "tags": []
+    },
+    "chat-client": {
+      "tags": []
+    },
+    "chat-client-e2e": {
+      "tags": [],
+      "implicitDependencies": ["chat-client"]
     }
   }
 }
